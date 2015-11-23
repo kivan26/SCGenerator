@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:id="@+id/relativelayoutmain">
+
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_below="@+id/progressBar"
+        android:id="@+id/linearlayoutsmscontacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/colorPrimary">
+        <EditText
+            android:id="@+id/edittextnumberofimg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Number"
+            android:textColor="#fff"
+            android:textColorHint="#fff"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/generate"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="Generate"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:background="@drawable/button_generate_controller"/>
+
+
+
+</RelativeLayout>
