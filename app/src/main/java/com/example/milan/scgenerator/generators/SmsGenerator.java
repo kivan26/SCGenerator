@@ -40,7 +40,7 @@ public class SmsGenerator implements Generator {
 
 
     /**
-     * This method creating SMS using ContenValues
+     * Method create SMS (ContentValues)
      * @param id
      * */
     public ContentValues values(int id) {
@@ -57,7 +57,7 @@ public class SmsGenerator implements Generator {
 
 
     /**
-     * This method generete message with random and return it.
+     * Generete message with random and return it.
      * @return message
      * */
     public String message() {
