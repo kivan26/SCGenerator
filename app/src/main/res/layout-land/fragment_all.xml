@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_below="@+id/progressBar"
+        android:id="@+id/relativelayoutsms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorCyan"
+        android:padding="6dp">
+        <ImageView
+            android:id="@+id/iconSms"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_sms_white_24dp"/>
+        <TextView
+            android:id="@+id/textviewsms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SMS"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/iconSms"
+            android:layout_marginLeft="16dp"/>
+
+        <Switch
+            android:id="@+id/swsms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutcontacts"
+        android:layout_below="@+id/relativelayoutsms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/iconContacts"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_contact_phone_white_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contacts"
+            android:textColor="#fff"
+            android:layout_toRightOf="@+id/iconContacts"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"/>
+
+        <Switch
+            android:id="@+id/swcontact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutimage"
+        android:layout_below="@+id/relativelayoutcontacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorTreal">
+
+        <ImageView
+            android:id="@+id/iconImage"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_image_white_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Image"
+            android:textColor="#fff"
+            android:layout_toRightOf="@+id/iconImage"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"/>
+
+        <Switch
+            android:id="@+id/swimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutvideo"
+        android:layout_below="@+id/relativelayoutimage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorAccent">
+
+        <ImageView
+            android:id="@+id/iconVideo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_movie_creation_white_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video"
+            android:textColor="#fff"
+            android:layout_toRightOf="@+id/iconVideo"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"/>
+
+        <Switch
+            android:id="@+id/swvideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/relativelayoutvideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorGray">
+        <EditText
+            android:id="@+id/edittextnumberall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Number"/>
+    </RelativeLayout>
+
+
+
+    <Button
+        android:id="@+id/generate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Generate"
+        android:layout_alignParentBottom="true"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:background="@drawable/button_generate_controller"/>
+
+</RelativeLayout>
