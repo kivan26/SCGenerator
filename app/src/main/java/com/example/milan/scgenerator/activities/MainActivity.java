@@ -28,7 +28,8 @@ import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 
-public class MainActivity extends AppCompatActivity implements ServiceConnection, MaterialTabListener {
+public class MainActivity extends AppCompatActivity implements ServiceConnection
+        , MaterialTabListener {
     private static final String TAG = "MainActivity";
     private boolean isBind;
     private PageAdapter adapter;

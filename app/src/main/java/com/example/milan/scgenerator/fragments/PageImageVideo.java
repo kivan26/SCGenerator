@@ -57,7 +57,8 @@ public class PageImageVideo extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container
+            , Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_imagevideo, null);
 
         ButterKnife.bind(this, view);
@@ -88,11 +89,13 @@ public class PageImageVideo extends Fragment {
 
         // set video or image width
         if (!mEditTextWidth.getText().toString().isEmpty()) {
-            MainActivity.genService.imageVideoWidth = Integer.parseInt(mEditTextWidth.getText().toString());
+            MainActivity.genService.imageVideoWidth =
+                    Integer.parseInt(mEditTextWidth.getText().toString());
         }
         // set video or image height
         if (!mEditTextHeight.getText().toString().isEmpty()) {
-            MainActivity.genService.imageVideoHeight = Integer.parseInt(mEditTextHeight.getText().toString());
+            MainActivity.genService.imageVideoHeight =
+                    Integer.parseInt(mEditTextHeight.getText().toString());
         }
         // default min 1
         int number = 1;
@@ -151,7 +154,8 @@ public class PageImageVideo extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(GeneratorConstants.BROADCAST_EXTRA_ORDER));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver
+                , new IntentFilter(GeneratorConstants.BROADCAST_EXTRA_ORDER));
     }
 
     @Override
