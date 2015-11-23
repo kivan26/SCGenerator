@@ -13,8 +13,6 @@ public class VideoGenerator extends ImageGenerator {
     /** Video height. */
     private int height;
 
-
-
     @Override
     public void generate(final int number) {
         Bitmap.Config config = Bitmap.Config.ARGB_8888;
