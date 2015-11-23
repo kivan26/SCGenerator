@@ -28,7 +28,7 @@ public class ContactGenerator extends SmsGenerator {
     }
 
     /**
-     * Method generate values for contacts and write them
+     * Generate values for contacts and write them
      * @param number int */
     public void contacts(int number) {
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
@@ -94,7 +94,7 @@ public class ContactGenerator extends SmsGenerator {
 
 
     /**
-     * Method generate mail. */
+     * Generate mail. */
     public String mail() {
         StringBuilder stringBuilder = new StringBuilder();
 
