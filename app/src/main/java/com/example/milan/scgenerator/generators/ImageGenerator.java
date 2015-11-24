@@ -35,7 +35,7 @@ public class ImageGenerator implements Generator {
 
         for (int i = 0; i < number; i++) {
             save(Bitmap.createBitmap(createColors(width, height), 0, stride, width, height, config)
-                     , "image", "jpg");
+                     , "image", "jpg", root);
         }
     }
 
@@ -46,7 +46,7 @@ public class ImageGenerator implements Generator {
      * @param filename String
      * @param fileextension String
      * */
-    public void save(Bitmap bitmap, String filename, String fileextension) {
+    public void save(Bitmap bitmap, String filename, String fileextension, String root) {
         File file = new File(root);
         String imageName = filename + "-" + random.nextInt(1000) + "." + fileextension;
         File image = new File(file, imageName);
