@@ -42,15 +42,16 @@ public class CallGenerator implements Generator {
 
     }
 
+    /** Create call log. */
     private ContentValues createCallLog(){
         // incoming or outgoing type
         int callType = CallLog.Calls.INCOMING_TYPE;
-        if(random.nextInt(1) == 0){
+        if(random.nextInt(2) == 0){
             callType = CallLog.Calls.OUTGOING_TYPE;
         }
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(CallLog.Calls.NUMBER,random.nextInt(16 - 10) + 10);
+        contentValues.put(CallLog.Calls.NUMBER,random.nextInt(200000 - 100000) + 100000);
         contentValues.put(CallLog.Calls.DATE, System.currentTimeMillis());
         contentValues.put(CallLog.Calls.DURATION, random.nextInt(60 - 5) + 5);
         contentValues.put(CallLog.Calls.TYPE, callType);

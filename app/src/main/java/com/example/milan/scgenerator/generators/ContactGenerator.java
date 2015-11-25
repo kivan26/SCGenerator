@@ -41,7 +41,7 @@ public class ContactGenerator extends SmsGenerator {
                 .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
-            // first name and last name
+            // First name and last name
             contentProviderOperations.add(ContentProviderOperation
                 .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -54,19 +54,19 @@ public class ContactGenerator extends SmsGenerator {
                 .build());
 
 
-            // phone number
+            // Phone Number
             contentProviderOperations.add(ContentProviderOperation
                 .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE
                         , ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
                 .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER
-                        , super.random.nextInt(20000 - 1000) + 1000)
+                        , super.random.nextInt(200000 - 10000) + 10000)
                 .withValue(ContactsContract.CommonDataKinds.Phone.TYPE
                         , ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM)
                 .build());
 
-            // email
+            // Email
             contentProviderOperations.add(ContentProviderOperation
                 .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -77,16 +77,37 @@ public class ContactGenerator extends SmsGenerator {
                         , ContactsContract.CommonDataKinds.Email.TYPE_WORK)
                 .build());
 
-            // sip address
+            // Sip address
+            contentProviderOperations.add(ContentProviderOperation
+                    .newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE
+                            , ContactsContract.CommonDataKinds.SipAddress.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.SipAddress.DATA
+                            , "+" + String.valueOf(random.nextInt(999 - 100) + 100))
+                    .withValue(ContactsContract.CommonDataKinds.SipAddress.TYPE
+                            , ContactsContract.CommonDataKinds.SipAddress.TYPE_CUSTOM)
+                    .build());
+
+
+            // Postal Structure
             contentProviderOperations.add(ContentProviderOperation
                 .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE
-                        , ContactsContract.CommonDataKinds.SipAddress.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.SipAddress.DATA, super.message())
-                .withValue(ContactsContract.CommonDataKinds.SipAddress.TYPE
-                        , ContactsContract.CommonDataKinds.SipAddress.TYPE_CUSTOM)
-                    .build());
+                        , ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.DATA, super.message())
+                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.TYPE
+                        , ContactsContract.CommonDataKinds.StructuredPostal.TYPE_CUSTOM)
+                .build());
+
+            // Nickname
+            contentProviderOperations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Nickname.DATA, "Mr. " + super.message())
+                .withValue(ContactsContract.CommonDataKinds.Nickname.TYPE, ContactsContract.CommonDataKinds.Nickname.TYPE_CUSTOM)
+                .build());
 
             try {
                 context.getContentResolver().applyBatch(ContactsContract.AUTHORITY
