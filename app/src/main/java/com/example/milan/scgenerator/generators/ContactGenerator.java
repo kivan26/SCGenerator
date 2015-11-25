@@ -31,17 +31,19 @@ public class ContactGenerator extends SmsGenerator {
      * Generate values for contacts and write them
      * @param number int */
     public void contacts(int number) {
-        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+        ArrayList<ContentProviderOperation> contentProviderOperations = new ArrayList<>();
 
         for (int i = 0; i < number; i++) {
 
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+            contentProviderOperations.add(ContentProviderOperation
+                .newInsert(ContactsContract.RawContacts.CONTENT_URI)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
                 .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
                 .build());
 
-            // first name , last name
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+            // first name and last name
+            contentProviderOperations.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE
                         , ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
@@ -52,8 +54,9 @@ public class ContactGenerator extends SmsGenerator {
                 .build());
 
 
-            // number
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+            // phone number
+            contentProviderOperations.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE
                         , ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
@@ -64,7 +67,8 @@ public class ContactGenerator extends SmsGenerator {
                 .build());
 
             // email
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+            contentProviderOperations.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE
                         , ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
@@ -73,9 +77,21 @@ public class ContactGenerator extends SmsGenerator {
                         , ContactsContract.CommonDataKinds.Email.TYPE_WORK)
                 .build());
 
+            // sip address
+            contentProviderOperations.add(ContentProviderOperation
+                .newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE
+                        , ContactsContract.CommonDataKinds.SipAddress.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.SipAddress.DATA, super.message())
+                .withValue(ContactsContract.CommonDataKinds.SipAddress.TYPE
+                        , ContactsContract.CommonDataKinds.SipAddress.TYPE_CUSTOM)
+                    .build());
+
             try {
-                context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-                ops.clear();
+                context.getContentResolver().applyBatch(ContactsContract.AUTHORITY
+                        , contentProviderOperations);
+                contentProviderOperations.clear();
             } catch (RemoteException | OperationApplicationException e) {
                 Log.e(TAG, e.getMessage());
                 if (service != null) {
@@ -84,7 +100,7 @@ public class ContactGenerator extends SmsGenerator {
             }
 
         }
-
+        // send finish status
         if (service != null) {
             service.finish();
         }
@@ -98,8 +114,10 @@ public class ContactGenerator extends SmsGenerator {
     public String mail() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i = 0; i < 10; i++) {
-            if (i == 5) {
+        int size = random.nextInt(20 - 10) + 10;
+        int halfofsize = (size / 2);
+        for (int i = 0; i < size; i++) {
+            if (i == halfofsize) {
                 stringBuilder.append("@");
 
             } else {

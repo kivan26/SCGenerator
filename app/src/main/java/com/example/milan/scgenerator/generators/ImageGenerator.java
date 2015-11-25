@@ -33,6 +33,7 @@ public class ImageGenerator implements Generator {
         // stride must be >= width
         stride += (width + 1);
 
+        // create how much images we need
         for (int i = 0; i < number; i++) {
             save(Bitmap.createBitmap(createColors(width, height), 0, stride, width, height, config)
                      , "image", "jpg", root);
@@ -41,7 +42,7 @@ public class ImageGenerator implements Generator {
 
 
     /**
-     * Save Image or Video on phone.
+     * Save image or video .
      * @param bitmap Bitmap
      * @param filename String
      * @param fileextension String

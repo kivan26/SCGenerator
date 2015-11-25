@@ -31,6 +31,7 @@ import butterknife.OnClick;
  * Created by milan on 18.11.15..
  */
 public class PageImageVideo extends Fragment {
+    /** Fragment position. */
     private int value;
     @Bind(R.id.edittextnumberofimg)EditText mEditTextNumber;
     @Bind(R.id.edittextwidth) EditText mEditTextWidth;
@@ -61,15 +62,13 @@ public class PageImageVideo extends Fragment {
             , Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_imagevideo, null);
 
+        // Butter knife lib
         ButterKnife.bind(this, view);
 
+        // Background color depend is it image or video generator
         if(value == 3) {
             linearLayout.setBackgroundColor(getResources().getColor(R.color.colorTreal));
-        } else {
-            linearLayout.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
-
-       // snackbar = Snackbar.make(this, "Done", Snackbar.LENGTH_LONG);
 
         return view;
     }
@@ -82,28 +81,31 @@ public class PageImageVideo extends Fragment {
             return;
         }
 
-        // disable button
+        // Disable button generate
         mButtonGenerate.setEnabled(false);
-        // show progress bar
+
+        // Show progress bar
         mProgressBar.setVisibility(View.VISIBLE);
 
-        // set video or image width
+        // Set video or image width
         if (!mEditTextWidth.getText().toString().isEmpty()) {
             MainActivity.genService.imageVideoWidth =
                     Integer.parseInt(mEditTextWidth.getText().toString());
         }
-        // set video or image height
+
+        // Set video or image height
         if (!mEditTextHeight.getText().toString().isEmpty()) {
             MainActivity.genService.imageVideoHeight =
                     Integer.parseInt(mEditTextHeight.getText().toString());
         }
-        // default min 1
+
+        // Default number if it is not set
         int number = 1;
-        if (!mEditTextNumber.getText().toString().isEmpty()) {
-            number = Integer.parseInt(mEditTextNumber.getText().toString());
-        }
-        // set max
+        if (!mEditTextNumber.getText().toString().isEmpty())
+
+        // Set max
         mProgressBar.setMax(number);
+
         // fragment on position 3 is image generator
         if(value == 3) {
             MainActivity.genService.generateImages(number);
@@ -112,12 +114,13 @@ public class PageImageVideo extends Fragment {
             MainActivity.genService.generateVideo(number);
         }
 
+
     }
 
 
 
 
-    /** State reciver from service. */
+    /** State reciver. */
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -125,7 +128,9 @@ public class PageImageVideo extends Fragment {
             String state = bundle.getString(GeneratorConstants.BROADCAST_EXTRA_GET_ORDER);
 
             switch (state) {
+                // Successfully
                 case GeneratorConstants.BROADCAST_ACTION_FINISHED:
+                    // Snackbar
                     final Snackbar snackbar = Snackbar.make(mRelativeLayoutMain, "Done"
                             , Snackbar.LENGTH_LONG);
                     snackbar.setAction("Dismiss", new View.OnClickListener() {
@@ -136,10 +141,30 @@ public class PageImageVideo extends Fragment {
                     });
                     snackbar.show();
 
-                    // enable button
+                    // Enable button generater
                     mButtonGenerate.setEnabled(true);
-                    // hide progressbar
+
+                    // Hide progressbar
                     mProgressBar.setVisibility(View.GONE);
+
+                    break;
+
+                // Unsuccessfully
+                case GeneratorConstants.BROADCAST_ACTION_FAILED:
+                    // Snackbar
+                    final Snackbar snackbar1 = Snackbar.make(mRelativeLayoutMain, "Failed"
+                            , Snackbar.LENGTH_LONG);
+                    snackbar1.setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar1.dismiss();
+                        }
+                    });
+                    snackbar1.show();
+
+                    // Hide progressbar
+                    mProgressBar.setVisibility(View.GONE);
+
                     break;
 
                 default:

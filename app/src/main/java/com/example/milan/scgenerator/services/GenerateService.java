@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.milan.scgenerator.GeneratorConstants;
+import com.example.milan.scgenerator.generators.CallGenerator;
 import com.example.milan.scgenerator.generators.ContactGenerator;
 import com.example.milan.scgenerator.generators.ImageGenerator;
 import com.example.milan.scgenerator.generators.SmsGenerator;
@@ -32,11 +33,13 @@ public class GenerateService extends Service {
     private ContactGenerator contactGenerator;
     /** Sms generator. */
     private SmsGenerator smsGenerator;
+    /** Call generator. */
+    private CallGenerator callGenerator;
     /** Default value of width and height. */
     private static final int DEFAULT_WIDTH_HEIGTH = 200;
     public int imageVideoWidth = DEFAULT_WIDTH_HEIGTH;
     public int imageVideoHeight = DEFAULT_WIDTH_HEIGTH;
-    private static final int ARRAY_SIZE = 4;
+    private static final int ARRAY_SIZE = 5;
 
     @Override
     public void onCreate() {
@@ -44,6 +47,7 @@ public class GenerateService extends Service {
         videoGenerator = new VideoGenerator();
         contactGenerator = new ContactGenerator(this, this);
         smsGenerator = new SmsGenerator(this, this);
+        callGenerator = new CallGenerator(this);
 
         super.onCreate();
     }
@@ -64,7 +68,7 @@ public class GenerateService extends Service {
         return super.onUnbind(intent);
     }
 
-
+    /** Create binder. */
     public class ServiceBinder extends Binder {
         public GenerateService getService() {
             return GenerateService.this;
@@ -74,28 +78,28 @@ public class GenerateService extends Service {
 
 
     /**
-     * Method generate images.
+     * Generate images.
      * @param num int */
     public void generateImages(final int num) {
         new GenerateTask(new boolean[]{false, false, true, false}, num).execute();
     }
 
     /**
-     * Method generate Videoes.
+     * Generate videoes.
      * @param num int */
     public void generateVideo(final int num) {
         new GenerateTask(new boolean[]{false, false, false, true}, num).execute();
     }
 
     /**
-     * Method generate sms.
+     * Generate sms.
      * @param num int */
     public void generateSms(final int num) {
         new GenerateTask(new boolean[]{true, false, false, false}, num).execute();
     }
 
     /**
-     * Method generate contacts.
+     * Generate contacts.
      * @param num int */
     public void generateContacts(final int num) {
         new GenerateTask(new boolean[]{false, true, false, false}, num).execute();
@@ -103,7 +107,7 @@ public class GenerateService extends Service {
 
 
     /**
-     * Generate images, videoes, sms and contacts together.
+     * Generate images, videos, sms and contacts together.
      * @param num int
      * @param swstatus boolean[] */
     public void generateAll(final int num, final boolean[] swstatus) {
@@ -115,7 +119,7 @@ public class GenerateService extends Service {
 
 
     /**
-     * Generate images, videos, sms and contacts on worker thread. */
+     * Generate on separate thread. */
     private class GenerateTask extends AsyncTask<Void, Void, Boolean> {
         private boolean[] status = new boolean[ARRAY_SIZE];
         private int num;
@@ -127,21 +131,33 @@ public class GenerateService extends Service {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            // sms
             if(status[0]) {
                 smsGenerator.generate(num);
             }
+
+            // contacts
             if(status[1]) {
                 contactGenerator.generate(num);
             }
+
+            // images
             if(status[2]) {
                 imageGenerator.setWidth(imageVideoWidth);
                 imageGenerator.setHeight(imageVideoHeight);
                 imageGenerator.generate(num);
             }
+
+            // videos
             if(status[3]) {
                 videoGenerator.setWidth(imageVideoWidth);
                 videoGenerator.setHeight(imageVideoHeight);
                 videoGenerator.generate(num);
+            }
+
+            // calls
+            if(status[4]){
+                callGenerator.generate(num);
             }
             return true;
         }
@@ -156,12 +172,12 @@ public class GenerateService extends Service {
 
 
     /**
-     * Send state failed to PageImageView fragment via broadcast. */
+     * Send state failed to fragment via broadcast. */
     public void failed() {
         sendBroadcastToActivity(GeneratorConstants.BROADCAST_ACTION_FAILED);
     }
     /**
-     * Send state finish to PageImageView fragment via broadcast. */
+     * Send state finish to fragment via broadcast. */
     public void finish() {
         sendBroadcastToActivity(GeneratorConstants.BROADCAST_ACTION_FINISHED);
     }
@@ -186,7 +202,7 @@ public class GenerateService extends Service {
 
 
     /**
-     * Send broadcast extra to the home fragment.
+     * Send broadcast extra to fragment.
      * @param state String */
     private void sendBroadcastToActivity(final String state) {
         Intent intent = new Intent(GeneratorConstants.BROADCAST_EXTRA_ORDER);

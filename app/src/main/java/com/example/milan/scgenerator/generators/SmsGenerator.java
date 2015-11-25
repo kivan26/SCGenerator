@@ -30,17 +30,23 @@ public class SmsGenerator implements Generator {
     public void generate(int number) {
         ContentValues[] contentValues = new ContentValues[number];
 
-        for (int i = 0; i < number; i++) {
-            contentValues[i] = values(i);
+        try {
+            for (int i = 0; i < number; i++) {
+                contentValues[i] = values(i);
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            Log.e(TAG, e.getMessage());
         }
+
         int insert = context.getContentResolver().bulkInsert(Telephony.Sms.Inbox.CONTENT_URI
                 , contentValues);
+
         Log.v(TAG, String.valueOf(insert));
     }
 
 
     /**
-     * Method create SMS (ContentValues)
+     * Create SMS (ContentValues).
      * @param id
      * */
     public ContentValues values(int id) {
@@ -57,7 +63,7 @@ public class SmsGenerator implements Generator {
 
 
     /**
-     * Generete message with random and return it.
+     * Generete random message.
      * @return message
      * */
     public String message() {

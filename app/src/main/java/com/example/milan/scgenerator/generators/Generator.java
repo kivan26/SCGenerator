@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
  */
 public interface Generator {
     /**
+     * Generate content.
      * @param number int
      * */
     void generate(int number);

@@ -36,7 +36,8 @@ public class PageAll extends Fragment {
     @Bind(R.id.swcontact) Switch mSwitchCon;
     @Bind(R.id.swimage) Switch mSwithcImg;
     @Bind(R.id.swvideo) Switch mSwitchVid;
-    private boolean[] swstatus = new boolean[4];
+    @Bind(R.id.swcalls) Switch mSwitchCall;
+    private boolean[] swstatus = new boolean[5];
 
 
 
@@ -58,11 +59,12 @@ public class PageAll extends Fragment {
         mSwitchCon.setOnCheckedChangeListener(new ConSwitch());
         mSwithcImg.setOnCheckedChangeListener(new ImgSwitch());
         mSwitchVid.setOnCheckedChangeListener(new VidSwitch());
+        mSwitchCall.setOnCheckedChangeListener(new CallSwitch());
 
         return view;
     }
 
-    /** On checked change listener for sms switch. */
+    /** Checked change listener for sms switch. */
     private class SmsSwitch implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -74,7 +76,7 @@ public class PageAll extends Fragment {
         }
     }
 
-    /** On checked change listener for contact switch. */
+    /** Checked change listener for contact switch. */
     private class ConSwitch implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -86,7 +88,7 @@ public class PageAll extends Fragment {
         }
     }
 
-    /** On checked change listener for image switch. */
+    /** Checked change listener for image switch. */
     private class ImgSwitch implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -98,7 +100,7 @@ public class PageAll extends Fragment {
         }
     }
 
-    /** On checked change listener for video switch. */
+    /** Checked change listener for video switch. */
     private class VidSwitch implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -106,6 +108,18 @@ public class PageAll extends Fragment {
                 swstatus[3] = true;
             } else {
                 swstatus[3] = false;
+            }
+        }
+    }
+
+    /** Checked change listener for call switch*/
+    private class CallSwitch implements CompoundButton.OnCheckedChangeListener{
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked){
+                swstatus[4] = true;
+            } else {
+                swstatus[4] = false;
             }
         }
     }
@@ -119,6 +133,7 @@ public class PageAll extends Fragment {
         // show progress bar
         mProgressBar.setVisibility(View.VISIBLE);
 
+        // if default number is not set
         int number = 1;
         if (!mEditTextNumber.getText().toString().isEmpty()) {
             number = Integer.parseInt(mEditTextNumber.getText().toString());
@@ -133,7 +148,7 @@ public class PageAll extends Fragment {
     }
 
 
-    /** State reciver from service. */
+    /** State reciver. */
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

@@ -12,7 +12,9 @@ import com.example.milan.scgenerator.fragments.PageSmsContacts;
  * Created by milan on 18.11.15..
  */
 public class PageAdapter extends FragmentPagerAdapter {
+    /** Number of pages. */
     private static final int NUMBER_OF_PAGES = 5;
+    /** Names of pages. */
     private static final String[] TABS_NAMES = {"All", "SMS", "Contacts", "Images", "Videos"};
 
     public PageAdapter(FragmentManager fragmentManager) {
@@ -22,17 +24,20 @@ public class PageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            // all
+            // All
             case 0:
                 return new PageAll();
-            // sms and contact
+
+            // Sms and contact
             case 1:
             case 2:
                 return PageSmsContacts.init(position);
-            // image and video
+
+            // Image and video
             case 3:
             case 4:
                 return PageImageVideo.init(position);
+
             default:
                 return new PageAll();
         }

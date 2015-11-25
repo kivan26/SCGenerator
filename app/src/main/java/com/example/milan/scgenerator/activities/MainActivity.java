@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Telephony;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,10 +20,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.milan.scgenerator.R;
 import com.example.milan.scgenerator.adapters.PageAdapter;
 import com.example.milan.scgenerator.services.GenerateService;
+
+import java.util.jar.Manifest;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,20 +53,21 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         Configuration configuration = getResources().getConfiguration();
         landscape = (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
-        // toolbar
+        // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Butter knife lib
         ButterKnife.bind(this);
 
-        // adapter
+        // Page adapter
         adapter = new PageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        // check is it application default
+        // Check is it app default
         isDefaultSmsApp();
 
-        // start service
+        // Start service
         startService();
         viewPager.setOffscreenPageLimit(4);
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -71,11 +78,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             }
         });
 
+        // Add all tabs
         for (int i = 0; i < adapter.getCount(); i++) {
             tabHost.addTab(tabHost.newTab().setText(adapter.getPageTitle(i)).setTabListener(this));
         }
 
-        // if orientation is landscape
+        // If orientation is landscape
         if(landscape){
             toolbar.setVisibility(View.GONE);
             tabHost.setVisibility(View.GONE);
@@ -95,7 +103,36 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
 
-    /** Alert dialog with alert that app is not default sms app.
+    private void askForCallPermission(){
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CALL_LOG) != PackageManager.PERMISSION_GRANTED){
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.WRITE_CALL_LOG)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_CALL_LOG}, 2);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == 2){
+            Toast.makeText(this, "Thx", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /** Alert dialog if app is not default.
      * @param pkName String */
     private void dialog(final String pkName)  {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -134,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
 
 
-    /** Start generator service and bind it. */
+    /** Start and bind service. */
     public void startService() {
         Intent intent = new Intent(this, GenerateService.class);
         startService(intent);
@@ -142,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
 
-    /** Stop service and unbind it. */
+    /** Stop and unbind service. */
     public void stopService() {
         Intent intent = new Intent(this, GenerateService.class);
         unbindService(this);
@@ -150,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
 
-    // connect
+    // Connect / bind
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         genService = ((GenerateService.ServiceBinder) service).getService();
@@ -159,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
 
-    // disconnect
+    // Disconnect /  unbind
     @Override
     public void onServiceDisconnected(ComponentName name) {
         isBind = false;
@@ -176,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
 
-    // Tabs
+    // Tabs listeners
     @Override
     public void onTabSelected(MaterialTab tab) {
         viewPager.setCurrentItem(tab.getPosition());

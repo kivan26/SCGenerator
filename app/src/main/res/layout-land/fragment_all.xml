@@ -139,7 +139,39 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativelayoutcalls"
         android:layout_below="@+id/relativelayoutvideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorYellow">
+
+        <ImageView
+            android:id="@+id/iconcalls"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_call_white_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call"
+            android:textColor="#fff"
+            android:layout_toRightOf="@+id/iconcalls"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"/>
+
+        <Switch
+            android:id="@+id/swcalls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/relativelayoutcalls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"

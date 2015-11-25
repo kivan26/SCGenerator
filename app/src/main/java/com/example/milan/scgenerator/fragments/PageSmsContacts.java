@@ -52,7 +52,6 @@ public class PageSmsContacts extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         value = getArguments() != null ? getArguments().getInt("value") : 1;
-        //ButterKnife.bind(getActivity());
     }
 
     @Nullable
@@ -61,7 +60,10 @@ public class PageSmsContacts extends Fragment {
             , Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_smscontacts, null);
 
+        // butter knife lib
         ButterKnife.bind(this, view);
+
+        // set background color depend of generator
         if (value == 1) {
             mLinearLayoutBody.setBackgroundColor(getResources().getColor(R.color.colorCyan));
         }
@@ -79,17 +81,16 @@ public class PageSmsContacts extends Fragment {
         // show progressbar
         mProgressBar.setVisibility(View.VISIBLE);
 
-        // default 1
+        // default number if it is not set
         int number = 1;
         if (!mEditTextNumber.getText().toString().isEmpty()) {
             number = Integer.parseInt(mEditTextNumber.getText().toString());
         }
 
-        // set max
-        mProgressBar.setMax(number);
-
+        // fragment on position 1 is sms
         if (value == 1) {
             MainActivity.genService.generateSms(number);
+        // fragment on position 2 is contact
         } else {
             MainActivity.genService.generateContacts(number);
         }
@@ -98,7 +99,7 @@ public class PageSmsContacts extends Fragment {
 
 
 
-    /** State reciver from service. */
+    /** State reciver. */
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -107,6 +108,7 @@ public class PageSmsContacts extends Fragment {
 
             switch (state) {
                 case GeneratorConstants.BROADCAST_ACTION_FINISHED:
+                    // Snackbar
                     final Snackbar snackbar = Snackbar.make(mRelativeLayoutMain, "Done"
                             , Snackbar.LENGTH_LONG);
                     snackbar.setAction("Dismiss", new View.OnClickListener() {
@@ -116,20 +118,17 @@ public class PageSmsContacts extends Fragment {
                         }
                     });
                     snackbar.show();
+
                     // enable button
                     mButtonGenerate.setEnabled(true);
+
                     // hide progressbar
                     mProgressBar.setVisibility(View.GONE);
 
-                    // reset counter
-                    counter = 0;
-                    break;
-
-                case GeneratorConstants.BROADCAST_ACTION_ONEFINISHED:
-                    mProgressBar.setProgress(counter);
                     break;
 
                 case GeneratorConstants.BROADCAST_ACTION_FAILED:
+                    // Snackbar
                     final Snackbar snackbar1 = Snackbar.make(mRelativeLayoutMain, "Failed"
                             , Snackbar.LENGTH_LONG);
                     snackbar1.setAction("Dismiss", new View.OnClickListener() {
